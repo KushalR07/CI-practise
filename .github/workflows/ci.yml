@@ -8,3 +8,15 @@ jobs :
             - uses: actions/setup-python@v5
             - run: pip install -r requirements.txt
             - run: pytest
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-python@v5
+        - run: pip install -r requirements.txt
+        - run: flake8 .
+    build:
+        needs: [test, lint]
+        runs-on: ubuntu-latest
+        steps:
+        - run: echo "Building the app..."
