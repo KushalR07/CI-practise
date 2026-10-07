@@ -8,6 +8,12 @@ jobs :
             - uses: actions/setup-python@v5
             - run: pip install -r requirements.txt
             - run: pytest
+            - run: |
+                echo "Commit: $GITHUB_SHA"
+                echo "Branch: $GITHUB_REF"
+                echo "Event: $GITHUB_EVENT_NAME"
+                echo "Machine: $(uname -a)"
+                pwd && ls -la
     lint:
         runs-on: ubuntu-latest
         steps:
