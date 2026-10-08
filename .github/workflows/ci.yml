@@ -26,4 +26,6 @@ jobs:
     needs: [test, lint]
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Building the app..."
+      - uses: actions/checkout@v4
+      - run: docker build -t ci-practice:${{ github.sha }} .
+      - run: docker run ci-practice:${{ github.sha }}
