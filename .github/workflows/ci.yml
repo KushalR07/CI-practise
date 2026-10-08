@@ -29,3 +29,4 @@ jobs:
       - uses: actions/checkout@v5
       - run: docker build -t ci-practice:${{ github.sha }} .
       - run: docker run ci-practice:${{ github.sha }}
+      
