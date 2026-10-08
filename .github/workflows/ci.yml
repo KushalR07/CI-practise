@@ -1,28 +1,29 @@
 name: CI
-on : [push, pull_request]
-jobs : 
-    test:
-        runs-on: ubuntu-latest
-        steps: 
-            - uses: actions/checkout@v4
-            - uses: actions/setup-python@v5
-            - run: pip install -r requirements.txt
-            - run: pytest
-            - run: |
-                echo "Commit: $GITHUB_SHA"
-                echo "Branch: $GITHUB_REF"
-                echo "Event: $GITHUB_EVENT_NAME"
-                echo "Machine: $(uname -a)"
-                pwd && ls -la
-    lint:
-        runs-on: ubuntu-latest
-        steps:
-        - uses: actions/checkout@v4
-        - uses: actions/setup-python@v5
-        - run: pip install -r requirements.txt
-        - run: flake8 .
-    build:
-        needs: [test, lint]
-        runs-on: ubuntu-latest
-        steps:
-        - run: echo "Building the app..."
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -r requirements.txt
+      - run: pytest
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: flake8 .
+  build:
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Building the app..."
