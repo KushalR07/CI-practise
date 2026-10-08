@@ -29,10 +29,4 @@ jobs:
       - uses: actions/checkout@v5
       - run: docker build -t ci-practice:${{ github.sha }} .
       - run: docker run ci-practice:${{ github.sha }}
-      - run: |
-          echo "Secret is: $MY_SECRET"
-          echo "Secret length: ${#MY_SECRET}"
-          echo "Wrong name is: '$WRONG_ONE'"
-        env:
-          MY_SECRET: ${{ secrets.MY_SECRET }}
-          WRONG_ONE: ${{ secrets.DOES_NOT_EXIST }}
+      
